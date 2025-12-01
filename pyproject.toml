@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "wbat-iterm-status"
-version = "2.0.0"
+version = "2.0.1"
 description = "Customizable status bar component for iTerm2 with plugin system"
 readme = "README.md"
 requires-python = ">=3.9"
