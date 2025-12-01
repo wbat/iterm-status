@@ -1,6 +1,5 @@
 """Kube plugin for context and namespace detection."""
 
-import re
 from typing import Any, Dict, List
 
 from ..iterm.session_vars import SessionContext

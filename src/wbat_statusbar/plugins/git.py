@@ -1,6 +1,5 @@
 """Git plugin with async git commands, fast mode, and background updates."""
 
-import re
 from typing import Any, Dict, List, Optional
 
 from ..iterm.session_vars import SessionContext
