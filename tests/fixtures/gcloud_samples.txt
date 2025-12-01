@@ -1,0 +1,2 @@
+my-account@example.com
+my-project-id
