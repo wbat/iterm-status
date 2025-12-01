@@ -44,4 +44,3 @@
 <!-- Link to related issues using "Closes #123" or "Fixes #123" -->
 
 Closes #
-

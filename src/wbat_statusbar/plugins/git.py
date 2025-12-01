@@ -64,8 +64,16 @@ class GitPlugin(BasePlugin):
             )
             
             dirty = bool(status_output)
-            staged_count = len([line for line in status_output.split("\n") if line.startswith(("M ", "A ", "D ", "R "))])
-            unstaged_count = len([line for line in status_output.split("\n") if line.startswith((" M", " A", " D", " R", "??"))])
+            staged_lines = [
+                line for line in status_output.split("\n")
+                if line.startswith(("M ", "A ", "D ", "R "))
+            ]
+            unstaged_lines = [
+                line for line in status_output.split("\n")
+                if line.startswith((" M", " A", " D", " R", "??"))
+            ]
+            staged_count = len(staged_lines)
+            unstaged_count = len(unstaged_lines)
         else:
             # Full status (slower but more detailed)
             status_output = await run_command_safe(
@@ -75,8 +83,9 @@ class GitPlugin(BasePlugin):
                 default=""
             )
             dirty = bool(status_output)
-            staged_count = len([line for line in status_output.split("\n") if line and line[0] != " "])
-            unstaged_count = len([line for line in status_output.split("\n") if line and line[0] == " "])
+            lines = status_output.split("\n")
+            staged_count = len([line for line in lines if line and line[0] != " "])
+            unstaged_count = len([line for line in lines if line and line[0] == " "])
         
         # Get ahead/behind (async, can be slow)
         ahead_behind = ""

@@ -9,7 +9,10 @@ try:
     import iterm2
 except ImportError:
     iterm2 = None
-    print("Error: iterm2 module not found. Please install it via: pip3 install iterm2", file=sys.stderr)
+    print(
+        "Error: iterm2 module not found. Please install it via: pip3 install iterm2",
+        file=sys.stderr
+    )
     sys.exit(1)
 
 from .core.cache import Cache
@@ -28,7 +31,7 @@ class StatusBarDaemon:
     """Main daemon that manages the status bar component."""
     
     def __init__(self):
-        self.connection: Optional[iterm2.Connection] = None
+        self.connection = None  # iterm2.Connection when available
         self.config: Optional[Dict] = None
         self.cache: Optional[Cache] = None
         self.scheduler: Optional[Scheduler] = None

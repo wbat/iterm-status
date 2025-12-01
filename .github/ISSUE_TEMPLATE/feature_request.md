@@ -29,4 +29,3 @@ assignees: ''
 ## Implementation Notes (Optional)
 
 <!-- If you have ideas about how this could be implemented, share them here -->
-

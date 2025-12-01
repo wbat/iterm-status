@@ -25,9 +25,10 @@ class ConfigError(Exception):
 
 def get_config_path() -> Path:
     """Get the configuration file path.
-    
+
     Tries ~/.config/wbat-iterm-status/config.toml first,
-    then falls back to ~/Library/Application Support/wbat-iterm-status/config.toml
+    then falls back to:
+    ~/Library/Application Support/wbat-iterm-status/config.toml
     """
     # Try XDG config first
     xdg_config = Path.home() / ".config" / "wbat-iterm-status" / "config.toml"
@@ -199,7 +200,8 @@ def _validate_config(config: Dict[str, Any]) -> None:
     global_section = config["global"]
     if "update_cadence_seconds" not in global_section:
         raise ConfigError("Missing 'update_cadence_seconds' in global section")
-    if not isinstance(global_section["update_cadence_seconds"], int) or global_section["update_cadence_seconds"] < 1:
+    update_cadence = global_section["update_cadence_seconds"]
+    if not isinstance(update_cadence, int) or update_cadence < 1:
         raise ConfigError("'update_cadence_seconds' must be a positive integer")
     
     # Validate cycle section
@@ -210,7 +212,9 @@ def _validate_config(config: Dict[str, Any]) -> None:
     if "enabled" not in cycle_section:
         raise ConfigError("Missing 'enabled' in cycle section")
     if cycle_section.get("enabled") and "interval_seconds" not in cycle_section:
-        raise ConfigError("Missing 'interval_seconds' in cycle section when cycle is enabled")
+        raise ConfigError(
+            "Missing 'interval_seconds' in cycle section when cycle is enabled"
+        )
     
     # Validate views section
     if "views" not in config:
@@ -222,7 +226,8 @@ def _validate_config(config: Dict[str, Any]) -> None:
     for view_name, view_config in config["views"].items():
         if "template" not in view_config:
             raise ConfigError(f"View '{view_name}' missing 'template' field")
-        if not isinstance(view_config["template"], str):
+        template = view_config["template"]
+        if not isinstance(template, str):
             raise ConfigError(f"View '{view_name}' template must be a string")
     
     # Validate plugins section

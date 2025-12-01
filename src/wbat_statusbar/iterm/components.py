@@ -18,7 +18,7 @@ class StatusBarComponent:
     
     def __init__(
         self,
-        component: iterm2.StatusBarComponent,
+        component,  # iterm2.StatusBarComponent when available
         render_func: Callable[[], str],
         update_cadence: float = 1.0
     ):
