@@ -161,7 +161,7 @@ class SessionContextCollector:
         
         for var_name in user_var_patterns:
             try:
-                user_monitor = await iterm2.VariableMonitor.async_create(
+                await iterm2.VariableMonitor.async_create(
                     self.connection,
                     variable_names=[var_name],
                     session_id=session_id,
