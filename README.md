@@ -1,1 +1,74 @@
-# iterm-status
+# WBAT iTerm2 Status Bar
+
+A customizable status bar component for iTerm2 with a plugin system. Displays git, AWS, GCP, Kubernetes, and more - all without slowing down your shell prompt.
+
+## Features
+
+- **Pro Mode**: Python daemon with timer-based updates (never blocks the prompt)
+- **Lite Mode**: Shell-only integration for minimal setup
+- **Plugin System**: Built-in plugins for Git, AWS, GCP, Kubernetes, and custom commands
+- **View Cycling**: Rotate through multiple status bar views automatically
+- **Context-Aware**: Automatically shows relevant information based on your current directory and commands
+- **Fast**: All expensive operations run in the background with TTL caching
+
+## Quick Start
+
+### Pro Mode (Recommended)
+
+1. **Install dependencies**:
+   ```bash
+   pip3 install iterm2
+   ```
+
+2. **Run installation script**:
+   ```bash
+   ./scripts/install.sh
+   ```
+
+3. **Enable in iTerm2**:
+   - Open iTerm2 → Scripts → AutoLaunch
+   - Enable `wbat_statusbar.py`
+   - Go to Profiles → Session → Configure Status Bar
+   - Add "WBAT Status" component
+
+### Lite Mode (Shell-Only)
+
+Add to your `~/.zshrc` or `~/.bashrc`:
+
+```bash
+source /path/to/iterm-status/shell/iterm2_user_vars.zsh  # for zsh
+# or
+source /path/to/iterm-status/shell/iterm2_user_vars.bash  # for bash
+```
+
+Then add an interpolated string to your status bar:
+- Go to Profiles → Session → Configure Status Bar
+- Add an interpolated string component
+- Use: `\(user.awsProfile) \(user.gcpProject)`
+
+## Documentation
+
+- [Quickstart Guide](docs/quickstart.md) - Detailed setup instructions
+- [Configuration](docs/configuration.md) - Config file reference
+- [Troubleshooting](docs/troubleshooting.md) - Common issues and solutions
+- [Plugin Development](docs/plugin-dev.md) - Creating custom plugins
+- [Security](docs/security.md) - Security considerations
+
+## Built-in Plugins
+
+- **Core**: Path, job name, clock
+- **Git**: Branch, status, ahead/behind, changes
+- **AWS**: Profile, region, account, role (env-only or identity mode)
+- **GCP**: Project, account (env-only or identity mode)
+- **Kubernetes**: Context, namespace
+- **Command**: Execute custom commands (with safety checks)
+
+## Requirements
+
+- iTerm2 3.0+
+- Python 3.9+
+- iTerm2 Python API (installed via iTerm2 or `pip3 install iterm2`)
+
+## License
+
+MIT
