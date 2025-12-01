@@ -48,12 +48,12 @@ jobs:
                         - name: Install dependencies
                           run: |
                                   python -m pip install --upgrade pip
-                                  # Install base dependencies (iterm2 is macOS-only)
-                                  pip install tomli tomli-w
+                                  # Install base dependencies (skip iterm2 on Linux)
+                                  pip install "tomli>=2.0.1; python_version < '3.11'" tomli-w
                                   pip install pytest pytest-asyncio
                                   # iterm2 is macOS-only, install only on macOS
                                   if [ "${{ matrix.os }}" == "macos-latest" ]; then
-                                    pip install iterm2 || echo "iterm2 install failed, continuing"
+                                    pip install "iterm2>=2.7" || echo "iterm2 install failed, continuing"
                                   else
                                     echo "Skipping iterm2 on Linux (macOS-only dependency)"
                                   fi
