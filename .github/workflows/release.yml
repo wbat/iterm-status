@@ -4,6 +4,9 @@ on:
         push:
                 tags:
                         - "v*"
+                branches:
+                        - main
+                        - init
 
 jobs:
         release:
@@ -38,6 +41,7 @@ jobs:
                                   zip -r wbat-iterm-status-${{ github.ref_name }}.zip release/
 
                         - name: Create GitHub Release
+                          if: startsWith(github.ref, 'refs/tags/v')
                           uses: softprops/action-gh-release@v1
                           with:
                                   files: |
@@ -47,3 +51,13 @@ jobs:
                                   prerelease: false
                           env:
                                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+                        - name: Upload build artifacts
+                          if: github.event_name == 'push' && !startsWith(github.ref, 'refs/tags/')
+                          uses: actions/upload-artifact@v4
+                          with:
+                                  name: wbat-iterm-status-build
+                                  path: |
+                                          wbat-iterm-status-*.tar.gz
+                                          wbat-iterm-status-*.zip
+                                  retention-days: 30
