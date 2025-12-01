@@ -1,10 +1,8 @@
 """Tests for configuration system."""
 
 import tempfile
-from pathlib import Path
 
 from wbat_statusbar.core.config import (
-    ConfigError,
     get_default_config,
     load_config,
 )
