@@ -36,7 +36,8 @@ def get_config_path() -> Path:
         return xdg_config
     
     # Fallback to macOS Application Support
-    app_support = Path.home() / "Library" / "Application Support" / "wbat-iterm-status" / "config.toml"
+    app_support_dir = Path.home() / "Library" / "Application Support" / "wbat-iterm-status"
+    app_support = app_support_dir / "config.toml"
     if app_support.exists():
         return app_support
     
@@ -173,16 +174,19 @@ def _apply_env_overrides(config: Dict[str, Any]) -> Dict[str, Any]:
         try:
             config["global"]["update_cadence_seconds"] = int(os.environ["WBAT_UPDATE_CADENCE"])
         except ValueError:
-            logger.warning(f"Invalid WBAT_UPDATE_CADENCE value: {os.environ['WBAT_UPDATE_CADENCE']}")
+            env_val = os.environ['WBAT_UPDATE_CADENCE']
+            logger.warning(f"Invalid WBAT_UPDATE_CADENCE value: {env_val}")
     
     if "WBAT_CYCLE_ENABLED" in os.environ:
-        config["cycle"]["enabled"] = os.environ["WBAT_CYCLE_ENABLED"].lower() in ("true", "1", "yes")
+        cycle_enabled = os.environ["WBAT_CYCLE_ENABLED"].lower()
+        config["cycle"]["enabled"] = cycle_enabled in ("true", "1", "yes")
     
     if "WBAT_CYCLE_INTERVAL" in os.environ:
         try:
             config["cycle"]["interval_seconds"] = int(os.environ["WBAT_CYCLE_INTERVAL"])
         except ValueError:
-            logger.warning(f"Invalid WBAT_CYCLE_INTERVAL value: {os.environ['WBAT_CYCLE_INTERVAL']}")
+            env_val = os.environ['WBAT_CYCLE_INTERVAL']
+            logger.warning(f"Invalid WBAT_CYCLE_INTERVAL value: {env_val}")
     
     return config
 
