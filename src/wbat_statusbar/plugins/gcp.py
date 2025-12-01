@@ -1,6 +1,6 @@
 """GCP plugin with env-only and identity modes, background CLI calls."""
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from ..iterm.session_vars import SessionContext
 from ..util.subprocess import run_command_safe
