@@ -2,8 +2,6 @@
 
 import time
 
-import pytest
-
 from wbat_statusbar.core.cache import Cache
 
 

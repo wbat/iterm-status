@@ -1,7 +1,5 @@
 """Tests for render engine."""
 
-import pytest
-
 from wbat_statusbar.core.render import Renderer, ViewCycler
 
 

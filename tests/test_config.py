@@ -3,8 +3,6 @@
 import tempfile
 from pathlib import Path
 
-import pytest
-
 from wbat_statusbar.core.config import (
     ConfigError,
     get_default_config,

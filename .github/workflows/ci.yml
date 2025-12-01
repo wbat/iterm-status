@@ -60,7 +60,7 @@ jobs:
 
                         - name: Run tests
                           run: |
-                                  pytest tests/ -v
+                                  PYTHONPATH=src pytest tests/ -v
 
         build:
                 runs-on: ubuntu-latest
