@@ -69,6 +69,64 @@ Then add an interpolated string to your status bar:
 - Python 3.9+
 - iTerm2 Python API (installed via iTerm2 or `pip3 install iterm2`)
 
+## Development
+
+### Setup
+
+1. **Clone the repository**:
+   ```bash
+   git clone <repo-url>
+   cd iterm-status
+   ```
+
+2. **Install development dependencies**:
+   ```bash
+   pip install -e ".[dev]"
+   ```
+
+3. **Install pre-commit hooks** (optional but recommended):
+   ```bash
+   pip install pre-commit
+   pre-commit install
+   ```
+
+### Code Quality
+
+This project uses:
+- **Black** for code formatting (line length: 100)
+- **Ruff** for linting and import sorting
+- **Pytest** for testing
+
+**Before committing**, run:
+```bash
+# Format code
+black src/ tests/
+
+# Check and fix linting issues
+ruff check --fix src/ tests/
+
+# Run tests
+pytest tests/
+```
+
+Or use pre-commit hooks (installed above) to automatically format and lint on commit.
+
+### Project Structure
+
+```
+src/wbat_statusbar/
+├── core/          # Core functionality (config, cache, scheduler, render)
+├── iterm/         # iTerm2 integration (components, session vars)
+├── plugins/       # Plugin implementations
+├── util/          # Utility functions
+└── main.py        # Daemon entry point
+
+tests/             # Test suite
+scripts/           # Build and installation scripts
+shell/             # Shell integration snippets
+docs/              # Documentation
+```
+
 ## License
 
 MIT

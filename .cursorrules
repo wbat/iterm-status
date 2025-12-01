@@ -1,0 +1,37 @@
+# Cursor Rules for WBAT iTerm2 Status Bar
+
+## Code Style
+- Use Python 3.9+ features
+- Follow PEP 8 style guide
+- Line length: 100 characters (configured in pyproject.toml)
+- Use type hints where appropriate
+- Format code with `black` before committing
+- Run `ruff check` to catch linting issues
+
+## Formatting
+- Always format code with `black` before committing
+- Run `ruff check --fix` to auto-fix linting issues
+- Use `black src/ tests/` to format all Python files
+- Use `ruff check src/ tests/` to check for issues
+
+## Testing
+- Write tests for new features
+- Run tests with `pytest tests/`
+- Ensure all tests pass before committing
+
+## Code Quality
+- Keep functions focused and small
+- Use descriptive variable names
+- Add docstrings to public functions/classes
+- Handle errors gracefully with appropriate logging
+- Use async/await for I/O operations
+
+## Dependencies
+- Keep dependencies minimal
+- Document why each dependency is needed
+- Use type hints for better IDE support
+
+## Git
+- Write clear commit messages
+- Keep commits focused on a single change
+- Run formatting and linting before committing
