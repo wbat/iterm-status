@@ -1,6 +1,6 @@
 """Plugin manager for discovery, loading, and lifecycle management."""
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
 from ..core.cache import Cache
 from ..core.logging import setup_logging

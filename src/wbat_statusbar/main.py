@@ -22,7 +22,7 @@ from .core.plugin_manager import PluginManager
 from .core.render import Renderer, ViewCycler
 from .core.scheduler import Scheduler
 from .iterm.components import ComponentRegistry
-from .iterm.session_vars import SessionContext, SessionContextCollector
+from .iterm.session_vars import SessionContextCollector
 
 logger = setup_logging()
 

@@ -2,7 +2,6 @@
 
 import logging
 import logging.handlers
-import os
 from pathlib import Path
 from typing import Optional
 

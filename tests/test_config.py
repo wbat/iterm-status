@@ -1,7 +1,5 @@
 """Tests for configuration system."""
 
-import tempfile
-
 from wbat_statusbar.core.config import (
     get_default_config,
     load_config,

@@ -1,7 +1,7 @@
 """Generic command plugin with safety features."""
 
 import shlex
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from ..iterm.session_vars import SessionContext
 from ..util.subprocess import run_command_safe
