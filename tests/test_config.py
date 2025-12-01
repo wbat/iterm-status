@@ -9,7 +9,7 @@ from wbat_statusbar.core.config import (
 def test_get_default_config():
     """Test default config generation."""
     config = get_default_config()
-    
+
     assert "global" in config
     assert "views" in config
     assert "plugins" in config
@@ -21,19 +21,20 @@ def test_load_config_creates_default(tmp_path):
     """Test that load_config creates default config if missing."""
     config_dir = tmp_path / "wbat-iterm-status"
     config_file = config_dir / "config.toml"
-    
+
     # Config file doesn't exist yet
     assert not config_file.exists()
-    
+
     # Monkey patch get_config_path to use our temp dir
     import wbat_statusbar.core.config as config_module
+
     original_get_path = config_module.get_config_path
-    
+
     def mock_get_path():
         return config_file
-    
+
     config_module.get_config_path = mock_get_path
-    
+
     try:
         config = load_config()
         assert config_file.exists()
@@ -55,9 +56,10 @@ def test_env_overrides(tmp_path, monkeypatch):
     config_dir = tmp_path / "wbat-iterm-status"
     config_file = config_dir / "config.toml"
     config_dir.mkdir(parents=True)
-    
+
     # Create minimal config
-    config_file.write_text("""
+    config_file.write_text(
+        """
 [global]
 update_cadence_seconds = 1
 log_level = "info"
@@ -71,22 +73,24 @@ template = "{path}"
 
 [plugins.git]
 enabled = true
-""")
-    
+"""
+    )
+
     import wbat_statusbar.core.config as config_module
+
     original_get_path = config_module.get_config_path
-    
+
     def mock_get_path():
         return config_file
-    
+
     config_module.get_config_path = mock_get_path
-    
+
     try:
         # Test log level override
         monkeypatch.setenv("WBAT_LOG_LEVEL", "debug")
         config = load_config()
         assert config["global"]["log_level"] == "debug"
-        
+
         # Test update cadence override
         monkeypatch.setenv("WBAT_UPDATE_CADENCE", "5")
         config = load_config()

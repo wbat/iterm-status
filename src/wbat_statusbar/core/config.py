@@ -34,13 +34,13 @@ def get_config_path() -> Path:
     xdg_config = Path.home() / ".config" / "wbat-iterm-status" / "config.toml"
     if xdg_config.exists():
         return xdg_config
-    
+
     # Fallback to macOS Application Support
     app_support_dir = Path.home() / "Library" / "Application Support" / "wbat-iterm-status"
     app_support = app_support_dir / "config.toml"
     if app_support.exists():
         return app_support
-    
+
     # Default to XDG location for new installs
     return xdg_config
 
@@ -101,19 +101,19 @@ def get_default_config() -> Dict[str, Any]:
 
 def load_config(config_path: Optional[Path] = None) -> Dict[str, Any]:
     """Load configuration from TOML file.
-    
+
     Args:
         config_path: Optional path to config file. If None, uses default location.
-    
+
     Returns:
         Configuration dictionary
-    
+
     Raises:
         ConfigError: If config file is invalid or cannot be read
     """
     if config_path is None:
         config_path = get_config_path()
-    
+
     # Create default config if file doesn't exist
     if not config_path.exists():
         logger.info(f"Config file not found at {config_path}, creating default config")
@@ -125,42 +125,42 @@ def load_config(config_path: Optional[Path] = None) -> Dict[str, Any]:
         else:
             logger.warning("tomli_w not available, cannot write default config file")
         return default_config
-    
+
     try:
         with open(config_path, "rb") as f:
             config = tomllib.load(f)
     except Exception as e:
         raise ConfigError(f"Failed to load config from {config_path}: {e}") from e
-    
+
     # Merge with defaults to ensure all keys exist
     default_config = get_default_config()
     merged_config = _merge_config(default_config, config)
-    
+
     # Apply environment variable overrides
     merged_config = _apply_env_overrides(merged_config)
-    
+
     # Validate configuration
     _validate_config(merged_config)
-    
+
     return merged_config
 
 
 def _merge_config(default: Dict[str, Any], user: Dict[str, Any]) -> Dict[str, Any]:
     """Merge user config into default config, recursively."""
     result = default.copy()
-    
+
     for key, value in user.items():
         if key in result and isinstance(result[key], dict) and isinstance(value, dict):
             result[key] = _merge_config(result[key], value)
         else:
             result[key] = value
-    
+
     return result
 
 
 def _apply_env_overrides(config: Dict[str, Any]) -> Dict[str, Any]:
     """Apply environment variable overrides to config.
-    
+
     Environment variables:
     - WBAT_LOG_LEVEL: Override log_level
     - WBAT_UPDATE_CADENCE: Override update_cadence_seconds
@@ -169,74 +169,72 @@ def _apply_env_overrides(config: Dict[str, Any]) -> Dict[str, Any]:
     """
     if "WBAT_LOG_LEVEL" in os.environ:
         config["global"]["log_level"] = os.environ["WBAT_LOG_LEVEL"].lower()
-    
+
     if "WBAT_UPDATE_CADENCE" in os.environ:
         try:
             config["global"]["update_cadence_seconds"] = int(os.environ["WBAT_UPDATE_CADENCE"])
         except ValueError:
-            env_val = os.environ['WBAT_UPDATE_CADENCE']
+            env_val = os.environ["WBAT_UPDATE_CADENCE"]
             logger.warning(f"Invalid WBAT_UPDATE_CADENCE value: {env_val}")
-    
+
     if "WBAT_CYCLE_ENABLED" in os.environ:
         cycle_enabled = os.environ["WBAT_CYCLE_ENABLED"].lower()
         config["cycle"]["enabled"] = cycle_enabled in ("true", "1", "yes")
-    
+
     if "WBAT_CYCLE_INTERVAL" in os.environ:
         try:
             config["cycle"]["interval_seconds"] = int(os.environ["WBAT_CYCLE_INTERVAL"])
         except ValueError:
-            env_val = os.environ['WBAT_CYCLE_INTERVAL']
+            env_val = os.environ["WBAT_CYCLE_INTERVAL"]
             logger.warning(f"Invalid WBAT_CYCLE_INTERVAL value: {env_val}")
-    
+
     return config
 
 
 def _validate_config(config: Dict[str, Any]) -> None:
     """Validate configuration schema.
-    
+
     Raises:
         ConfigError: If config is invalid
     """
     # Validate global section
     if "global" not in config:
         raise ConfigError("Missing 'global' section in config")
-    
+
     global_section = config["global"]
     if "update_cadence_seconds" not in global_section:
         raise ConfigError("Missing 'update_cadence_seconds' in global section")
     update_cadence = global_section["update_cadence_seconds"]
     if not isinstance(update_cadence, int) or update_cadence < 1:
         raise ConfigError("'update_cadence_seconds' must be a positive integer")
-    
+
     # Validate cycle section
     if "cycle" not in config:
         raise ConfigError("Missing 'cycle' section in config")
-    
+
     cycle_section = config["cycle"]
     if "enabled" not in cycle_section:
         raise ConfigError("Missing 'enabled' in cycle section")
     if cycle_section.get("enabled") and "interval_seconds" not in cycle_section:
-        raise ConfigError(
-            "Missing 'interval_seconds' in cycle section when cycle is enabled"
-        )
-    
+        raise ConfigError("Missing 'interval_seconds' in cycle section when cycle is enabled")
+
     # Validate views section
     if "views" not in config:
         raise ConfigError("Missing 'views' section in config")
-    
+
     if not config["views"]:
         raise ConfigError("At least one view must be defined")
-    
+
     for view_name, view_config in config["views"].items():
         if "template" not in view_config:
             raise ConfigError(f"View '{view_name}' missing 'template' field")
         template = view_config["template"]
         if not isinstance(template, str):
             raise ConfigError(f"View '{view_name}' template must be a string")
-    
+
     # Validate plugins section
     if "plugins" not in config:
         raise ConfigError("Missing 'plugins' section in config")
-    
+
     # Plugin-specific validation happens in plugin initialization
     logger.debug("Configuration validation passed")
