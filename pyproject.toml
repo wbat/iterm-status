@@ -48,6 +48,11 @@ target-version = ['py39']
 line-length = 100
 target-version = "py39"
 
+[tool.ruff.lint]
+# Ruff 0.16.0 enlarged its default rule set; CI installs the latest ruff, so
+# this keeps the rules the code was written against (the pre-0.16 default).
+select = ["E4", "E7", "E9", "F"]
+
 [tool.mypy]
 python_version = "3.9"
 warn_return_any = true
